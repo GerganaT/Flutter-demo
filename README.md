@@ -1,4 +1,4 @@
-# ios_android_demo
+# Flutter Demo App
 
 Simple demo project to demonstrate the usage of Flutter for multiplatform development
 
