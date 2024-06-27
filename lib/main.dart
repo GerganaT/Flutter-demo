@@ -56,9 +56,9 @@ class _CatImagePageState extends State<CatImagePage> {
             customElevatedButton(reloadImage, 'Get a cat', 50.0),
             customElevatedButton(() {
               screenshotController.capture().then((image) async {
-                final temporaryDirectory = await getTemporaryDirectory();
-                final path = '${temporaryDirectory.path}/sharedCatImage.jpg';
-                final File imageFile = File(path);
+                final imageFileTemporaryDirectory = await getTemporaryDirectory();
+                final imageFilePath = '${imageFileTemporaryDirectory.path}/sharedCatImage.jpg';
+                final File imageFile = File(imageFilePath);
                 await imageFile.writeAsBytes(image as List<int>);
                 final imageXFile = XFile(imageFile.path);
                 Share.shareXFiles(
