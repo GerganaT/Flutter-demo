@@ -1,16 +1,8 @@
-# ios_android_demo
+# Flutter Demo App
 
-A new Flutter project.
+Simple demo project to demonstrate the usage of Flutter for multiplatform development
 
-## Getting Started
+Flutter Android Studio setup -> https://www.youtube.com/watch?v=9WT9s7jkGEQ
 
-This project is a starting point for a Flutter application.
+Flutter setup for Visual Studio Code on Mac -> https://www.youtube.com/watch?v=343PpFsTDvM
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
