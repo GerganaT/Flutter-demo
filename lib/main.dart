@@ -1,5 +1,10 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:screenshot/screenshot.dart';
+import 'package:share_plus/share_plus.dart';
 
 void main() {
   runApp(const MyApp());
@@ -25,6 +30,7 @@ class CatImagePage extends StatefulWidget {
 
 class _CatImagePageState extends State<CatImagePage> {
   String imageUrl = 'https://cataas.com/cat';
+  ScreenshotController screenshotController = ScreenshotController();
 
   void reloadImage() {
     setState(() {
@@ -44,23 +50,47 @@ class _CatImagePageState extends State<CatImagePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            getCachedNetworkImage(),
-            Padding(
-              padding: const EdgeInsets.all(50.0),
-              child: ElevatedButton(
-                onPressed: reloadImage,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.deepPurple,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                ),
-                child: const Text('Get a cat'),
-              ),
-            ),
+            Screenshot(
+                controller: screenshotController,
+                child: getCachedNetworkImage()),
+            customElevatedButton(reloadImage, 'Get a cat', 50.0),
+            customElevatedButton(() {
+              screenshotController.capture().then((image) async {
+                final temporaryDirectory = await getTemporaryDirectory();
+                final path = '${temporaryDirectory.path}/sharedCatImage.jpg';
+                final File imageFile = File(path);
+                await imageFile.writeAsBytes(image as List<int>);
+                final imageXFile = XFile(imageFile.path);
+                Share.shareXFiles(
+                  [imageXFile],
+                  text: 'Share cat',
+                );
+              });
+            }
+                , 'Share a cat', 0.0),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget customElevatedButton(
+    void Function()? onPressed,
+    String buttonLabel,
+    double paddingValue,
+  ) {
+    return Padding(
+      padding: EdgeInsets.all(paddingValue),
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.deepPurple,
+          foregroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(4),
+          ),
+        ),
+        child: Text(buttonLabel),
       ),
     );
   }
