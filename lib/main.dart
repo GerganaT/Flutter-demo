@@ -6,6 +6,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
 
+import 'AdoptCatScreen.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -54,20 +56,15 @@ class _CatImagePageState extends State<CatImagePage> {
                 controller: screenshotController,
                 child: getCachedNetworkImage()),
             customElevatedButton(reloadImage, 'Get a cat', 50.0),
-            customElevatedButton(() {
-              screenshotController.capture().then((image) async {
-                final imageFileTemporaryDirectory = await getTemporaryDirectory();
-                final imageFilePath = '${imageFileTemporaryDirectory.path}/sharedCatImage.jpg';
-                final File imageFile = File(imageFilePath);
-                await imageFile.writeAsBytes(image as List<int>);
-                final imageXFile = XFile(imageFile.path);
-                Share.shareXFiles(
-                  [imageXFile],
-                  text: 'Share cat',
-                );
-              });
-            }
-                , 'Share a cat', 0.0),
+            customElevatedButton(() async {
+              final File file = await getCatImageScreenshotFile();
+              final imageXFile = XFile(file.path);
+              Share.shareXFiles(
+                [imageXFile],
+                text: 'Share cat',
+              );
+            }, 'Share a cat', 0.0),
+            customElevatedButton(_adoptCat, "Adopt a cat", 50.0)
           ],
         ),
       ),
@@ -108,6 +105,30 @@ class _CatImagePageState extends State<CatImagePage> {
       ),
       errorWidget: (context, url, error) => const Text(
           'Your cat went somewhere,check your internet connection and try again!'),
+    );
+  }
+
+  Future<File> getCatImageScreenshotFile() async {
+    final imageFileTemporaryDirectory = await getTemporaryDirectory();
+    final imageFileName =
+        'sharedCatImage${DateTime.now().millisecondsSinceEpoch.toString()}.jpg';
+    final imageFilePath = '${imageFileTemporaryDirectory.path}/$imageFileName';
+    await screenshotController.captureAndSave(
+      imageFileTemporaryDirectory.path,
+      fileName: imageFileName,
+    );
+    return File(imageFilePath);
+  }
+
+  void _adoptCat() async {
+    File catImageScreenshotFile = await getCatImageScreenshotFile();
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AdoptCatScreen(
+          imageFile: catImageScreenshotFile,
+        ),
+      ),
     );
   }
 }
