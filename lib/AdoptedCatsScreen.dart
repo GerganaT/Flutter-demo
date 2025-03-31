@@ -184,15 +184,17 @@ class _AdoptedCatsScreenState extends State<AdoptedCatsScreen> {
   Widget NoAdoptedCatsScreen() {
     return Container(
       color: mainBackgroundColor,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
+      child: const Padding(
+        padding: EdgeInsets.all(16.0),
         child: Center(
-          child: Flexible(child: ItalicText("You haven't adopted any cats yet. "
+          child: Text("You haven't adopted any cats yet. "
               "To adopt a cat, please go back"
-              " to the home screen and press the heart-shaped button, positioned to the top right side."))
-
+              " to the home screen and press the heart-shaped button,"
+              " positioned to the top right side.",
+            textAlign: TextAlign.center,
+          ),
         ),
-      ),
+        )
     );
   }
 }
