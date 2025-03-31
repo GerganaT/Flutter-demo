@@ -187,9 +187,10 @@ class _AdoptedCatsScreenState extends State<AdoptedCatsScreen> {
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Center(
-          child: ItalicText("You haven't adopted any cats yet. "
+          child: Flexible(child: ItalicText("You haven't adopted any cats yet. "
               "To adopt a cat, please go back"
-              " to the home screen and press the heart-shaped button, positioned to the top right side."),
+              " to the home screen and press the heart-shaped button, positioned to the top right side."))
+
         ),
       ),
     );
